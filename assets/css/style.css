@@ -1,0 +1,66 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.heading {
+    padding-top: 20px;
+    text-align: center;
+    color: #5E1224;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.card {
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    width: calc(33.33% - 40px);
+    margin: 20px;
+    background-color: #fff;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.images {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.brand-info {
+    margin: 10px 0;
+}
+
+.brand-label, .title-label, .category-label, .stock-label, .price-label, .rating-label, .discount-label {
+    color: #5E1224;
+    font-weight: bold;
+    font-style: italic;
+    font-size: 18px;
+    display: inline;
+    margin-right: 5px;
+}
+
+.brand-name, .title-name, .category-name, .stock-name, .price-name, .rating-name, .discount-name {
+    color: #333;
+    font-size: 17px;
+    display: inline;
+}
+
+.description {
+    padding: 15px 20px 15px;
+    color: #5E1224;
+    text-align: center;
+    font-size: 16px;
+}
