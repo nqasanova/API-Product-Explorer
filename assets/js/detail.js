@@ -53,9 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <div class="brand-info">
                         <h1 class="discount-label">Discount:</h1>
-                        <h1 class="discount-name">${product.discountPercentage}</h1>
+                        <h1 class="discount-name">${product.discountPercentage} %</h1>
                     </div>
-
+                    
                     <div id="product-images"></div>
                 </div>`;
 
@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 galleryContainer.appendChild(img);             
             });
         })
+        // Display error if any happens during fetch operation
         .catch(error => {
             console.log('An error occurred during fetch operation:', error);
         });
