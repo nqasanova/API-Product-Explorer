@@ -63,11 +63,25 @@
     margin-top: 20px;
 }
 
+#searchInput, #categorySelect, button {
+    margin-right: 10px;
+}
+
+
 #searchInput {
+    margin-left: 475px;
+    margin-top: 20px;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #5E1224;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px;
+}
+
+#categorySelect {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #5E1224;
+    border-radius: 20px;
 }
 
 button {
@@ -76,10 +90,15 @@ button {
     background-color: #5E1224;
     color: #fff;
     border: none;
-    border-radius: 20px; /* Rounded corners */
+    border-radius: 20px;
     cursor: pointer;
 }
 
 button:hover {
     background-color: #401017;
+}
+
+#categorySelect:focus {
+    border-color: #401017;
+    outline: none;
 }
