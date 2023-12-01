@@ -5,11 +5,16 @@ let products = [];
 function searchProducts() {
     // Retrieve the search input value and convert to lowercase for case-insensitive comparison
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    // Filter products based on title or category containing the search input
+    const categorySelect = document.getElementById('categorySelect');
+    const selectedCategory = categorySelect.value.toLowerCase();
+
+    // Filter products based on title, category, and search input
     const filteredProducts = products.filter(product => {
         return (
-            product.title.toLowerCase().includes(searchInput) ||
-            product.category.toLowerCase().includes(searchInput)
+            (product.title.toLowerCase().includes(searchInput) ||
+            product.category.toLowerCase().includes(searchInput) ||
+            product.description.toLowerCase().includes(searchInput)) &&
+            (selectedCategory === '' || product.category.toLowerCase() === selectedCategory)
         );
     });
 
@@ -62,6 +67,7 @@ function displayProducts(productsToDisplay) {
     });
 }
 
+// Fetch products from the API
 fetch('https://dummyjson.com/products/?limit=100')
     .then((response) => {
         // Check if the response status is OK
