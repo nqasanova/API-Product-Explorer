@@ -1,6 +1,25 @@
 // Initialize an empty array to store product data
 let products = [];
 
+// Function to dynamically populate the category select options
+function populateCategorySelect(categories) {
+    const categorySelect = document.getElementById('categorySelect');
+
+    // Add a default option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'All Categories';
+    categorySelect.appendChild(defaultOption);
+
+    // Add options for each category
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.toLowerCase();
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
+}
+
 // Function to search and filter products based on user input
 function searchProducts() {
     // Retrieve the search input value and convert to lowercase for case-insensitive comparison
@@ -12,8 +31,8 @@ function searchProducts() {
     const filteredProducts = products.filter(product => {
         return (
             (product.title.toLowerCase().includes(searchInput) ||
-            product.category.toLowerCase().includes(searchInput) ||
-            product.description.toLowerCase().includes(searchInput)) &&
+                product.category.toLowerCase().includes(searchInput) ||
+                product.description.toLowerCase().includes(searchInput)) &&
             (selectedCategory === '' || product.category.toLowerCase() === selectedCategory)
         );
     });
@@ -67,27 +86,28 @@ function displayProducts(productsToDisplay) {
     });
 }
 
-// Fetch products from the API
+// Fetch products from the API and populate category select options
 fetch('https://dummyjson.com/products/?limit=100')
     .then((response) => {
-        // Check if the response status is OK
         if (!response.ok) {
             throw new Error(`Network response was not ok (Status: ${response.status})`);
         }
         return response.json();
     })
     .then((completedata) => {
-        console.log('Response Data:', completedata);
-        // Check if "products" key exists in the response
         if (completedata.products) {
+            // Extract unique categories from the products
+            const uniqueCategories = [...new Set(completedata.products.map(product => product.category))];
+
+            // Populate the category select options
+            populateCategorySelect(uniqueCategories);
+
             products = completedata.products;
-            // Display all products initially
             displayProducts(products);
         } else {
             console.log('Invalid response format: "products" key not found.');
         }
     })
-    // Display error if any happens during fetch operation
     .catch(error => {
         console.log('An error occurred during the fetch operation:', error);
     });
