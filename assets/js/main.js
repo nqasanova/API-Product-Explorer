@@ -1,5 +1,7 @@
 // Initialize an empty array to store product data
 let products = [];
+let currentPage = 1;
+const itemsPerPage = 10;
 
 // Function to dynamically populate the category select options
 function populateCategorySelect(categories) {
@@ -22,12 +24,10 @@ function populateCategorySelect(categories) {
 
 // Function to search and filter products based on user input
 function searchProducts() {
-    // Retrieve the search input value and convert to lowercase for case-insensitive comparison
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
     const categorySelect = document.getElementById('categorySelect');
     const selectedCategory = categorySelect.value.toLowerCase();
 
-    // Filter products based on title, category, and search input
     const filteredProducts = products.filter(product => {
         return (
             (product.title.toLowerCase().includes(searchInput) ||
@@ -37,53 +37,96 @@ function searchProducts() {
         );
     });
 
-    displayProducts(filteredProducts);
+    currentPage = 1; // Reset current page to 1 when performing a new search
+    displayProducts(filteredProducts, currentPage, itemsPerPage);
 }
 
-// Function to display products on the webpage
-function displayProducts(productsToDisplay) {
+// Function to display products on the webpage with pagination
+function displayProducts(productsToDisplay, page, itemsPerPage) {
     const cardListBlock = document.querySelector(".cards");
     cardListBlock.innerHTML = "";
-    productsToDisplay.forEach((product) => {
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const productsSlice = productsToDisplay.slice(startIndex, endIndex);
+
+    productsSlice.forEach((product) => {
         const cardBlock = document.createElement("div");
         cardBlock.innerHTML = `<div class="card">
-            <img src=${product.thumbnail} alt="img" class="images">
+        <img src=${product.thumbnail} alt="img" class="images">
 
-            <div class="brand-info">
-                <h1 class="title-label">Title:</h1>
-                <h1 class="title-name">${product.title}</h1>
-            </div>
+        <div class="brand-info">
+            <h1 class="title-label">Title:</h1>
+            <h1 class="title-name">${product.title}</h1>
+        </div>
 
-            <div class="brand-info">
-                <h1 class="category-label">Category:</h1>
-                <h1 class="category-name">${product.category}</h1>
-            </div>
+        <div class="brand-info">
+            <h1 class="category-label">Category:</h1>
+            <h1 class="category-name">${product.category}</h1>
+        </div>
 
-            <div class="brand-info">
-                <h1 class="stock-label">Stock:</h1>
-                <h1 class="stock-name">${product.stock}</h1>
-            </div>
+        <div class="brand-info">
+            <h1 class="stock-label">Stock:</h1>
+            <h1 class="stock-name">${product.stock}</h1>
+        </div>
 
-            <div class="brand-info">
-                <h1 class="price-label">Price:</h1>
-                <h1 class="price-name">${product.price}</h1>
-            </div>
+        <div class="brand-info">
+            <h1 class="price-label">Price:</h1>
+            <h1 class="price-name">${product.price}</h1>
+        </div>
 
-            <div class="brand-info">
-                <h1 class="discount-label">Discount:</h1>
-                <h1 class="discount-name">${product.discountPercentage} %</h1>
-            </div>
-        </div>`;
+        <div class="brand-info">
+            <h1 class="discount-label">Discount:</h1>
+            <h1 class="discount-name">${product.discountPercentage} %</h1>
+        </div>
+    </div>`;
 
-        // Add a click event listener to open a new window with detailed product information
-        cardBlock.addEventListener("click", () => {
-            const url = `detail.html?id=${product.id}`;
-            window.open(url, "_blank");
-        });
-
-        // Append the card to the container
-        cardListBlock.appendChild(cardBlock);
+    cardBlock.addEventListener("click", () => {
+        const url = `detail.html?id=${product.id}`;
+        window.open(url, "_blank");
     });
+
+    cardListBlock.appendChild(cardBlock);
+});
+
+updatePaginationButtons();
+}
+
+// Function to update pagination buttons
+function updatePaginationButtons() {
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    const pageButtonsContainer = document.getElementById("pageButtons");
+    pageButtonsContainer.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement("button");
+        button.textContent = i;
+        button.onclick = () => goToPage(i);
+        pageButtonsContainer.appendChild(button);
+    }
+}
+
+// Function to navigate to the previous page
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        displayProducts(products, currentPage, itemsPerPage);
+    }
+}
+
+// Function to navigate to the next page
+function nextPage() {
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        displayProducts(products, currentPage, itemsPerPage);
+    }
+}
+
+// Function to navigate to a specific page
+function goToPage(page) {
+    currentPage = page;
+    displayProducts(products, currentPage, itemsPerPage);
 }
 
 // Fetch products from the API and populate category select options
@@ -96,14 +139,11 @@ fetch('https://dummyjson.com/products/?limit=100')
     })
     .then((completedata) => {
         if (completedata.products) {
-            // Extract unique categories from the products
             const uniqueCategories = [...new Set(completedata.products.map(product => product.category))];
-
-            // Populate the category select options
             populateCategorySelect(uniqueCategories);
 
             products = completedata.products;
-            displayProducts(products);
+            displayProducts(products, currentPage, itemsPerPage);
         } else {
             console.log('Invalid response format: "products" key not found.');
         }
