@@ -16,7 +16,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 20px;
-    min-height: 100vh; /* Ensure the container takes at least the full height of the viewport */
+    min-height: 100vh; 
 }
 
 .card {
@@ -30,10 +30,6 @@
     background-color: #fff;
     transition: transform 0.3s ease-in-out;
 }
-
-/* .card:hover {
-    transform: scale(1.05);
-} */
 
 .images {
     width: 100%;
