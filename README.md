@@ -4,6 +4,9 @@
 
 This web application fetches product data from the DummyJSON API and dynamically populates a user-friendly webpage. The application allows users to explore products, search for specific items, filter by category, and view detailed information about each product.
 
+## Hosted Website
+Visit the [API-Product-Explorer](https://nqasanova.github.io/API-Product-Explorer/) website to explore the application live!
+
 
 ## Table of Contents
 
