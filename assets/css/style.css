@@ -16,9 +16,11 @@
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 20px;
+    min-height: 100vh; /* Ensure the container takes at least the full height of the viewport */
 }
 
 .card {
+    border: 1px solid #5E1224;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -29,9 +31,9 @@
     transition: transform 0.3s ease-in-out;
 }
 
-.card:hover {
+/* .card:hover {
     transform: scale(1.05);
-}
+} */
 
 .images {
     width: 100%;
@@ -101,4 +103,9 @@ button:hover {
 #categorySelect:focus {
     border-color: #401017;
     outline: none;
+}
+
+.pagination {
+    margin-left: 328px;
+    margin-bottom: 20px;
 }
